@@ -1,4 +1,5 @@
 using Huellitas.Citas.Aplicacion;
+using Huellitas.Citas.Aplicacion.Eventos;
 using Huellitas.Citas.Dominio;
 using Huellitas.Citas.Infraestructura.Persistencia;
 using Huellitas.Citas.Tests.Dobles;
@@ -12,9 +13,14 @@ public class ServicioAgendaTests
 
     private readonly RepositorioCitasEnMemoria _repositorio = new();
     private readonly NotificadorEspia _notificador = new();
+    private readonly ObservadorEspia _observador = new();
     private readonly ServicioAgenda _agenda;
 
-    public ServicioAgendaTests() => _agenda = new ServicioAgenda(_repositorio, _notificador, new RelojFijo(Hoy));
+    public ServicioAgendaTests()
+    {
+        var eventos = new PublicadorDeEventos().Suscribir(new AvisarAlDueno(_notificador)).Suscribir(_observador);
+        _agenda = new ServicioAgenda(_repositorio, new RelojFijo(Hoy), eventos);
+    }
 
     private static SolicitudCita Solicitud(DateTime inicio, string telefono = "9999-0001", TipoServicio servicio = TipoServicio.Bano) =>
         new(new Dueno("Ana Reyes", telefono), new Mascota("Firulais", Tamano.Mediano), servicio, inicio);
@@ -37,7 +43,16 @@ public class ServicioAgendaTests
         var resultado = _agenda.Agendar(Solicitud(Hoy.AddHours(-2)));
 
         Assert.Equal("La fecha debe ser futura.", resultado.Motivo);
-        Assert.Empty(_notificador.Enviados);
+        Assert.Empty(_observador.Recibidos);
+    }
+
+    [Fact]
+    public void Agendar_HorarioLibre_PublicaElEventoCitaAgendada()
+    {
+        var resultado = _agenda.Agendar(Solicitud(MartesALas9));
+
+        var evento = Assert.Single(_observador.Recibidos);
+        Assert.Equal(resultado.Cita, evento.Cita);
     }
 
     [Fact]
