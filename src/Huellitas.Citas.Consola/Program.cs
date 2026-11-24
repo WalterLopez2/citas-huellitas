@@ -15,7 +15,7 @@ public static class Program
     {
         var agenda = new ServicioAgenda(
             new RepositorioCitasArchivo(args.Length > 0 ? args[0] : "citas.json"),
-            new NotificadorTelcoNet(),
+            new NotificadorConReintentos(new NotificadorTelcoNet(), intentos: 3),
             new RelojDelSistema());
 
         while (true)
