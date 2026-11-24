@@ -1,6 +1,10 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Huellitas.Citas.Antes/Huellitas.Citas.Antes.csproj" />
+    <Project Path="src/Huellitas.Citas.Aplicacion/Huellitas.Citas.Aplicacion.csproj" />
+    <Project Path="src/Huellitas.Citas.Consola/Huellitas.Citas.Consola.csproj" />
+    <Project Path="src/Huellitas.Citas.Dominio/Huellitas.Citas.Dominio.csproj" />
+    <Project Path="src/Huellitas.Citas.Infraestructura/Huellitas.Citas.Infraestructura.csproj" />
     <Project Path="src/TelcoNet.Sms/TelcoNet.Sms.csproj" />
   </Folder>
   <Folder Name="/tests/">

@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Huellitas.Citas.Antes\Huellitas.Citas.Antes.csproj" />
+    <ProjectReference Include="..\..\src\Huellitas.Citas.Dominio\Huellitas.Citas.Dominio.csproj" />
   </ItemGroup>
 
 </Project>
