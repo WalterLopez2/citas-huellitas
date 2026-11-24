@@ -1,3 +1,4 @@
+using Huellitas.Citas.Aplicacion.Eventos;
 using Huellitas.Citas.Aplicacion.Puertos;
 using Huellitas.Citas.Dominio;
 
@@ -19,4 +20,13 @@ internal sealed class NotificadorEspia : INotificador
         _enviados.Add((dueno, mensaje));
         return true;
     }
+}
+
+internal sealed class ObservadorEspia : IObservadorDeCitas
+{
+    private readonly List<CitaAgendada> _recibidos = [];
+
+    public IReadOnlyList<CitaAgendada> Recibidos => _recibidos;
+
+    public void AlAgendar(CitaAgendada evento) => _recibidos.Add(evento);
 }

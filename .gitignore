@@ -14,3 +14,4 @@ coverage*/
 # Archivos que genera la app al ejecutarse
 citas.txt
 citas.json
+citas.log

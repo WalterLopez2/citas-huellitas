@@ -8,7 +8,11 @@ public class EquivalenciaTests : IDisposable
 {
     private readonly string _archivo = Path.Combine(Path.GetTempPath(), $"citas-{Guid.NewGuid()}.json");
 
-    public void Dispose() => File.Delete(_archivo);
+    public void Dispose()
+    {
+        File.Delete(_archivo);
+        File.Delete(Path.ChangeExtension(_archivo, ".log"));
+    }
 
     [Fact]
     public void Main_GuionDeDemo_RespondeIgualQueLaVersionAnterior()

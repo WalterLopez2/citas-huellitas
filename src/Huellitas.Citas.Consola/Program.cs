@@ -1,7 +1,9 @@
 ﻿using System.Globalization;
 using Huellitas.Citas.Aplicacion;
+using Huellitas.Citas.Aplicacion.Eventos;
 using Huellitas.Citas.Dominio;
 using Huellitas.Citas.Infraestructura;
+using Huellitas.Citas.Infraestructura.Bitacora;
 using Huellitas.Citas.Infraestructura.Notificaciones;
 using Huellitas.Citas.Infraestructura.Persistencia;
 
@@ -13,10 +15,13 @@ public static class Program
 
     public static void Main(string[] args)
     {
-        var agenda = new ServicioAgenda(
-            new RepositorioCitasArchivo(args.Length > 0 ? args[0] : "citas.json"),
-            new NotificadorTelcoNet(),
-            new RelojDelSistema());
+        var rutaCitas = args.Length > 0 ? args[0] : "citas.json";
+
+        var eventos = new PublicadorDeEventos()
+            .Suscribir(new AvisarAlDueno(new NotificadorConReintentos(new NotificadorTelcoNet(), intentos: 3)))
+            .Suscribir(new BitacoraEnArchivo(Path.ChangeExtension(rutaCitas, ".log")));
+
+        var agenda = new ServicioAgenda(new RepositorioCitasArchivo(rutaCitas), new RelojDelSistema(), eventos);
 
         while (true)
         {

@@ -1,4 +1,5 @@
 using Huellitas.Citas.Dominio;
+using Huellitas.Citas.Dominio.Precios;
 
 namespace Huellitas.Citas.Tests.Dominio;
 
@@ -52,26 +53,46 @@ public class CitaTests
     }
 }
 
-public class CalculadoraPrecioTests
+public class TablaDePreciosTests
 {
     [Theory]
     [InlineData(TipoServicio.Bano, Tamano.Pequeno, 150)]
     [InlineData(TipoServicio.Bano, Tamano.Grande, 280)]
     [InlineData(TipoServicio.BanoYCorte, Tamano.Mediano, 320)]
-    public void Calcular_ClienteNuevo_CobraElPrecioDeLaTabla(TipoServicio servicio, Tamano tamano, decimal esperado)
+    public void PrecioBase_CadaServicioYTamano_TieneSuPrecio(TipoServicio servicio, Tamano tamano, decimal esperado)
     {
-        var precio = CalculadoraPrecio.Calcular(servicio, tamano, citasPrevias: 0);
+        var precio = TablaDePrecios.PrecioBase(servicio, tamano);
 
         Assert.Equal(esperado, precio);
     }
+}
+
+public class TarifaTests
+{
+    [Fact]
+    public void Aplicar_TarifaEstandar_NoCambiaElPrecio()
+    {
+        var precio = new TarifaEstandar().Aplicar(200m);
+
+        Assert.Equal(200m, precio);
+    }
+
+    [Fact]
+    public void Aplicar_TarifaClienteFrecuente_Descuenta10PorCiento()
+    {
+        var precio = new TarifaClienteFrecuente().Aplicar(200m);
+
+        Assert.Equal(180m, precio);
+    }
 
     [Theory]
-    [InlineData(4, 200)]
-    [InlineData(5, 180)]
-    public void Calcular_DesdeLaQuintaCitaPrevia_Descuenta10PorCiento(int citasPrevias, decimal esperado)
+    [InlineData(0, typeof(TarifaEstandar))]
+    [InlineData(4, typeof(TarifaEstandar))]
+    [InlineData(5, typeof(TarifaClienteFrecuente))]
+    public void Para_SegunCitasPrevias_EligeLaTarifa(int citasPrevias, Type esperada)
     {
-        var precio = CalculadoraPrecio.Calcular(TipoServicio.Bano, Tamano.Mediano, citasPrevias);
+        var tarifa = SelectorDeTarifa.Para(citasPrevias);
 
-        Assert.Equal(esperado, precio);
+        Assert.IsType(esperada, tarifa);
     }
 }
