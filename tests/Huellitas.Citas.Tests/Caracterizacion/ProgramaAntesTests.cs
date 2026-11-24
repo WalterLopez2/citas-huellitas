@@ -3,7 +3,7 @@ using ProgramaAntes = Huellitas.Citas.Antes.Program;
 
 namespace Huellitas.Citas.Tests.Caracterizacion;
 
-[Collection(Consola.Nombre)]
+[Collection(ConsolaSimulada.Nombre)]
 public class ProgramaAntesTests : IDisposable
 {
     public static readonly string[] RespuestasDemo =
@@ -28,7 +28,7 @@ public class ProgramaAntesTests : IDisposable
     [Fact]
     public void Main_GuionDeDemo_RespondeLoMismoQueHoy()
     {
-        var respuestas = Consola.Ejecutar(ProgramaAntes.Main, Consola.EntradaDemo());
+        var respuestas = ConsolaSimulada.Ejecutar(ProgramaAntes.Main, ConsolaSimulada.EntradaDemo());
 
         Assert.Equal(RespuestasDemo, respuestas);
     }
@@ -37,9 +37,9 @@ public class ProgramaAntesTests : IDisposable
     public void Main_SextaCitaDelMismoTelefono_Descuenta10PorCiento()
     {
         var entrada = string.Concat(Enumerable.Range(8, 6)
-            .Select(hora => Consola.Agendar("Ana Reyes", "9999-0001", "Firulais", "P", "1", $"2027-01-13 {hora:00}:00")));
+            .Select(hora => ConsolaSimulada.Agendar("Ana Reyes", "9999-0001", "Firulais", "P", "1", $"2027-01-13 {hora:00}:00")));
 
-        var respuestas = Consola.Ejecutar(ProgramaAntes.Main, entrada + "0\n");
+        var respuestas = ConsolaSimulada.Ejecutar(ProgramaAntes.Main, entrada + "0\n");
 
         Assert.EndsWith("Total: L 150.00", respuestas[^3]);
         Assert.EndsWith("Total: L 135.00", respuestas[^1]);
@@ -50,9 +50,9 @@ public class ProgramaAntesTests : IDisposable
     [InlineData("mañana", "Fecha inválida.")]
     public void Main_FechaNoValida_RechazaLaCita(string fecha, string esperado)
     {
-        var entrada = Consola.Agendar("Ana Reyes", "9999-0001", "Firulais", "P", "1", fecha) + "0\n";
+        var entrada = ConsolaSimulada.Agendar("Ana Reyes", "9999-0001", "Firulais", "P", "1", fecha) + "0\n";
 
-        var respuestas = Consola.Ejecutar(ProgramaAntes.Main, entrada);
+        var respuestas = ConsolaSimulada.Ejecutar(ProgramaAntes.Main, entrada);
 
         Assert.Equal([esperado], respuestas);
     }
@@ -60,9 +60,9 @@ public class ProgramaAntesTests : IDisposable
     [Fact]
     public void Main_TamanoDesconocido_LoCobraComoGrande()
     {
-        var entrada = Consola.Agendar("Ana Reyes", "9999-0001", "Firulais", "X", "1", "2027-01-13 08:00") + "0\n";
+        var entrada = ConsolaSimulada.Agendar("Ana Reyes", "9999-0001", "Firulais", "X", "1", "2027-01-13 08:00") + "0\n";
 
-        var respuestas = Consola.Ejecutar(ProgramaAntes.Main, entrada);
+        var respuestas = ConsolaSimulada.Ejecutar(ProgramaAntes.Main, entrada);
 
         Assert.EndsWith("Total: L 280.00", respuestas[^1]);
     }

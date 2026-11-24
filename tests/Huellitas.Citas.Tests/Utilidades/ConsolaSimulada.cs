@@ -1,9 +1,9 @@
 namespace Huellitas.Citas.Tests.Utilidades;
 
 [CollectionDefinition(Nombre, DisableParallelization = true)]
-public sealed class Consola
+public sealed class ConsolaSimulada
 {
-    public const string Nombre = "Consola";
+    public const string Nombre = "ConsolaSimulada";
 
     private static readonly string[] Indicaciones =
     [
