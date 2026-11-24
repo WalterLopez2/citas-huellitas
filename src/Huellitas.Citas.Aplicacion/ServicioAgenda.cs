@@ -1,6 +1,7 @@
 using System.Globalization;
 using Huellitas.Citas.Aplicacion.Puertos;
 using Huellitas.Citas.Dominio;
+using Huellitas.Citas.Dominio.Precios;
 
 namespace Huellitas.Citas.Aplicacion;
 
@@ -30,7 +31,8 @@ public sealed class ServicioAgenda
             return ResultadoAgenda.Rechazada("Ese horario ya está ocupado.");
 
         var citasPrevias = _repositorio.ContarDelTelefono(solicitud.Dueno.Telefono);
-        var precio = CalculadoraPrecio.Calcular(solicitud.Servicio, solicitud.Mascota.Tamano, citasPrevias);
+        var tarifa = SelectorDeTarifa.Para(citasPrevias);
+        var precio = tarifa.Aplicar(TablaDePrecios.PrecioBase(solicitud.Servicio, solicitud.Mascota.Tamano));
         var cita = new Cita(Guid.NewGuid(), solicitud.Dueno, solicitud.Mascota, solicitud.Servicio, solicitud.Inicio, precio);
 
         _repositorio.Agregar(cita);
