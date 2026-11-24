@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Huellitas.Citas.Dominio\Huellitas.Citas.Dominio.csproj" />
     <ProjectReference Include="..\TelcoNet.Sms\TelcoNet.Sms.csproj" />
+    <ProjectReference Include="..\Huellitas.Citas.Aplicacion\Huellitas.Citas.Aplicacion.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

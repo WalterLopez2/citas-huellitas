@@ -1,6 +1,9 @@
 ﻿using System.Globalization;
 using Huellitas.Citas.Aplicacion;
 using Huellitas.Citas.Dominio;
+using Huellitas.Citas.Infraestructura;
+using Huellitas.Citas.Infraestructura.Notificaciones;
+using Huellitas.Citas.Infraestructura.Persistencia;
 
 namespace Huellitas.Citas.Consola;
 
@@ -10,7 +13,10 @@ public static class Program
 
     public static void Main(string[] args)
     {
-        var agenda = new ServicioAgenda(args.Length > 0 ? args[0] : "citas.json");
+        var agenda = new ServicioAgenda(
+            new RepositorioCitasArchivo(args.Length > 0 ? args[0] : "citas.json"),
+            new NotificadorTelcoNet(),
+            new RelojDelSistema());
 
         while (true)
         {
