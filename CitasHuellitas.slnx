@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Huellitas.Citas.Antes/Huellitas.Citas.Antes.csproj" />
+    <Project Path="src/TelcoNet.Sms/TelcoNet.Sms.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Huellitas.Citas.Tests/Huellitas.Citas.Tests.csproj" />
+  </Folder>
+</Solution>
