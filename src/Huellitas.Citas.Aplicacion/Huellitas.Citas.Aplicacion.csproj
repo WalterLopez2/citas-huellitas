@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Huellitas.Citas.Dominio\Huellitas.Citas.Dominio.csproj" />
-    <ProjectReference Include="..\Huellitas.Citas.Infraestructura\Huellitas.Citas.Infraestructura.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
